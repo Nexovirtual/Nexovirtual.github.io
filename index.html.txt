@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nexo Virtual - Asistente Virtual</title>
+  <style>
+    :root{
+      --bg-dark:#0b1f35;
+      --bg-dark-2:#081a2d;
+      --text:#0d1b2a;
+      --muted:#6b7785;
+      --card:#ffffff;
+      --border:#e7eef7;
+      --shadow:0 18px 40px rgba(0,0,0,.12);
+      --shadow-soft:0 10px 25px rgba(13,27,42,.08);
+      --blue:#1f7ae0;
+      --blue-2:#1364bf;
+      --pill:#f4f7fb;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:#fff;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{
+      width:min(1120px, 92vw);
+      margin:0 auto;
+    }
+
+    /* HERO */
+    .hero{
+      background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-dark-2) 100%);
+      color:#fff;
+      padding:72px 0 36px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:42px;
+      align-items:start;
+    }
+    .hero h1{
+      margin:0 0 14px;
+      font-size:44px;
+      line-height:1.08;
+      letter-spacing:-.4px;
+    }
+    .hero h1 .accent{
+      color:#5fb2ff;
+      font-weight:800;
+    }
+    .hero p{
+      margin:0 0 22px;
+      max-width:560px;
+      color:rgba(255,255,255,.80);
+      line-height:1.6;
+      font-size:16px;
+    }
+    .cta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:10px;
+      font-weight:700;
+      border:1px solid transparent;
+      cursor:pointer;
+      user-select:none;
+      transition:.18s ease;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
+      color:#fff;
+      box-shadow:0 14px 28px rgba(31,122,224,.22);
+    }
+    .btn-primary:hover{transform:translateY(-1px); filter:brightness(1.02)}
+    .btn-ghost{
+      background:#fff;
+      color:var(--text);
+      border-color:rgba(255,255,255,.45);
+      box-shadow:0 10px 20px rgba(0,0,0,.12);
+    }
+    .btn-ghost:hover{transform:translateY(-1px); filter:brightness(1.01)}
+
+    /* Right card */
+    .side-card{
+      background:rgba(255,255,255,.96);
+      color:var(--text);
+      border-radius:14px;
+      padding:18px 18px 14px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(231,238,247,.9);
+    }
+    .side-card h3{
+      margin:2px 0 12px;
+      font-size:18px;
+      font-weight:800;
+    }
+    .checklist{
+      list-style:none;
+      padding:0;
+      margin:0 0 14px;
+      display:grid;
+      gap:10px;
+    }
+    .checklist li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      color:#2b3a4a;
+      font-size:14px;
+      line-height:1.45;
+    }
+    .tick{
+      width:18px;height:18px;
+      flex:0 0 18px;
+      margin-top:1px;
+      border-radius:50%;
+      background:#e8f3ff;
+      display:grid;
+      place-items:center;
+      color:var(--blue);
+      font-weight:900;
+      font-size:12px;
+    }
+    .contact-box{
+      margin-top:10px;
+      border-top:1px solid var(--border);
+      padding-top:12px;
+      background:#f7f9fc;
+      border-radius:12px;
+      padding:14px;
+    }
+    .contact-box h4{
+      margin:0 0 10px;
+      font-size:14px;
+      font-weight:800;
+      color:#33465a;
+    }
+    .contact-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin:8px 0;
+      color:#1f2f40;
+      font-weight:700;
+    }
+    .icon{
+      width:18px;height:18px;flex:0 0 18px;color:#6c7f95;
+    }
+    .contact-row span{
+      font-weight:700;
+    }
+    .contact-row small{
+      font-weight:600;
+      color:#405368;
+    }
+
+    /* hero stats */
+    .hero-stats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:16px;
+      margin-top:34px;
+    }
+    .stat{
+      background:rgba(255,255,255,.95);
+      border:1px solid rgba(231,238,247,.95);
+      border-radius:12px;
+      padding:14px 16px;
+      text-align:center;
+      box-shadow:var(--shadow-soft);
+      color:var(--text);
+    }
+    .stat strong{
+      display:block;
+      font-size:22px;
+      letter-spacing:-.2px;
+      margin-bottom:4px;
+    }
+    .stat span{
+      display:block;
+      color:#5b6b7c;
+      font-weight:600;
+      font-size:13px;
+    }
+
+    /* SECTIONS */
+    section{
+      padding:56px 0;
+      background:#fff;
+    }
+    .section-title{
+      text-align:center;
+      margin:0 0 26px;
+      font-size:34px;
+      letter-spacing:-.4px;
+    }
+
+    /* Cards grids */
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+    .grid-6{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 10px 25px rgba(13,27,42,.06);
+    }
+    .service-card{
+      text-align:center;
+      padding:22px 18px;
+    }
+    .service-icon{
+      width:56px;height:56px;
+      margin:0 auto 12px;
+      border-radius:14px;
+      background:#f1f7ff;
+      display:grid;
+      place-items:center;
+      color:var(--blue);
+    }
+    .service-card h3{
+      margin:0 0 8px;
+      font-size:18px;
+      font-weight:800;
+    }
+    .service-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    /* Plans */
+    .plan-card{
+      text-align:center;
+      padding:22px 18px;
+    }
+    .plan-card h3{
+      margin:0 0 10px;
+      font-size:18px;
+      font-weight:800;
+    }
+    .plan-hours{
+      font-size:36px;
+      font-weight:900;
+      letter-spacing:-.5px;
+      margin-bottom:8px;
+    }
+    .plan-list{
+      margin:14px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+      text-align:left;
+      max-width:260px;
+      margin-left:auto;
+      margin-right:auto;
+      color:#3b4b5b;
+      font-weight:650;
+      font-size:13px;
+    }
+    .plan-list li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      line-height:1.35;
+    }
+    .mini-tick{
+      width:18px;height:18px;flex:0 0 18px;
+      border-radius:5px;
+      background:#e9f4ff;
+      color:var(--blue);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      font-size:12px;
+      margin-top:1px;
+    }
+
+    /* Contact footer */
+    .contact-wrap{
+      width:min(900px, 92vw);
+      margin:0 auto;
+    }
+    .contact-cards{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+    .contact-card{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      padding:22px 18px;
+      font-weight:900;
+      font-size:18px;
+    }
+    .badge{
+      width:44px;height:44px;border-radius:12px;
+      display:grid;place-items:center;
+      background:#f1f7ff;color:var(--blue);
+      border:1px solid #e3efff;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr; gap:22px;}
+      .hero h1{font-size:38px;}
+      .hero-stats{grid-template-columns:1fr; }
+      .grid-6{grid-template-columns:1fr; }
+      .grid-3{grid-template-columns:1fr; }
+      .contact-cards{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-grid">
+
+        <div>
+          <h1>
+            Delegas tareas.<br />
+            Ganas tiempo.<br />
+            <span class="accent">Tu negocio crece.</span>
+          </h1>
+
+          <p>
+            Te ayudo con gestión administrativa, atención al cliente, redes sociales y automatización
+            para que te centres en vender y escalar.
+          </p>
+
+          <div class="cta">
+            <a class="btn btn-primary" href="https://wa.me/34651778036" target="_blank" rel="noreferrer">
+              Hablar por WhatsApp
+            </a>
+            <a class="btn btn-ghost" href="mailto:eduardo@nexovirtual.com">
+              Enviar Email
+            </a>
+          </div>
+        </div>
+
+        <aside class="side-card">
+          <h3>Trabajo contigo si...</h3>
+          <ul class="checklist">
+            <li><span class="tick">✓</span>tienes demasiadas tareas y poco tiempo,</li>
+            <li><span class="tick">✓</span>quieres atender mejor a tus clientes.</li>
+            <li><span class="tick">✓</span>necesitas ordenar procesos y agenda.</li>
+            <li><span class="tick">✓</span>quieres una mano derecha digital fiable.</li>
+          </ul>
+
+          <div class="contact-box">
+            <h4>Contacto directo</h4>
+
+            <div class="contact-row">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.36 11.36 0 003.56.57 1 1 0 011 1v3.5a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.02l-2.2 2.2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>651 77 80 36</span>
+            </div>
+
+            <div class="contact-row">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M22 8l-10 7L2 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>eduardo@nexovirtual.com</span>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <strong>+10h/semana</strong>
+          <span>ahorradas delegando</span>
+        </div>
+        <div class="stat">
+          <strong>Respuesta rápida</strong>
+          <span>a tus clientes</span>
+        </div>
+        <div class="stat">
+          <strong>100% remoto</strong>
+          <span>España &amp; internacional</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SERVICIOS -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">Servicios</h2>
+
+      <div class="grid-6">
+        <div class="card service-card">
+          <div class="service-icon">
+            <!-- doc icon -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 3h7l3 3v15a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.8" />
+              <path d="M14 3v4h4" stroke="currentColor" stroke-width="1.8" />
+              <path d="M8 12h8M8 16h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Gestión administrativa</h3>
+          <p>Emails, agenda, documentación, facturación y soporte…</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">
+            <!-- headset icon -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 12a8 8 0 0 1 16 0v6a2 2 0 0 1-2 2h-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M6 12v6a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M6 14H4a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M18 14h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h3>Atención al cliente</h3>
+          <p>WhatsApp, Instagram, email y gestión de incidencias.</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">
+            <!-- megaphone icon -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 10v4a2 2 0 0 0 2 2h1l3 4v-4h6l4-3V9l-4-3H10V2L7 6H6a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Redes sociales</h3>
+          <p>Planificación, publicación y gestión de mensajes.</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">
+            <!-- automation icon -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h3>Automatización</h3>
+          <p>Optimización de procesos con herramientas digitales.</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">
+            <!-- cart icon -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M6 6l-2-2H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h3>Soporte e-commerce</h3>
+          <p>Pedidos, proveedores, emails y control de contenido.</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">
+            <!-- check/search icon -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M10 6h10M10 10h10M10 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M4 7l1 1 2-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 11l1 1 2-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 15l1 1 2-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Investigación &amp; organización</h3>
+          <p>Calendarios de servicio, documentación y tareas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANES -->
+  <section style="background:#f6f8fb;">
+    <div class="container">
+      <h2 class="section-title">Planes</h2>
+
+      <div class="grid-3">
+        <div class="card plan-card">
+          <h3>Plan Básico</h3>
+          <div class="plan-hours">10h/mes</div>
+          <ul class="plan-list">
+            <li><span class="mini-tick">✓</span>Emails, agenda, documentos</li>
+            <li><span class="mini-tick">✓</span>Redes sociales</li>
+            <li><span class="mini-tick">✓</span>Automatización de tareas</li>
+          </ul>
+        </div>
+
+        <div class="card plan-card">
+          <h3>Plan Profesional</h3>
+          <div class="plan-hours">25h/mes</div>
+          <ul class="plan-list">
+            <li><span class="mini-tick">✓</span>Atención al cliente</li>
+            <li><span class="mini-tick">✓</span>Redes sociales</li>
+            <li><span class="mini-tick">✓</span>Procesos y organización</li>
+          </ul>
+        </div>
+
+        <div class="card plan-card">
+          <h3>Plan Premium</h3>
+          <div class="plan-hours">40++/mes</div>
+          <ul class="plan-list">
+            <li><span class="mini-tick">✓</span>Gestión completa operativa</li>
+            <li><span class="mini-tick">✓</span>Automatizaciones</li>
+            <li><span class="mini-tick">✓</span>Prioridad y disponibilidad</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">Contacto</h2>
+
+      <div class="contact-wrap">
+        <div class="card" style="padding:22px;">
+          <div class="contact-cards">
+            <a class="card contact-card" href="https://wa.me/34651778036" target="_blank" rel="noreferrer">
+              <span class="badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 12a8 8 0 0 1-12.2 6.9L4 20l1.2-3.4A8 8 0 1 1 20 12z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M9 10.5c.8 1.8 2.7 3.4 4.6 4 .3.1.7 0 .9-.2l.9-.8c.2-.2.5-.3.8-.2l1.3.5c.4.2.6.6.5 1-.3 1-1.5 1.7-2.5 1.6-3.9-.5-8-4.3-8.8-8.2-.2-1 .5-2.2 1.5-2.5.4-.1.8.1 1 .5l.6 1.3c.1.3 0 .6-.2.8l-.8.9c-.2.2-.3.6-.2.9z" fill="currentColor" opacity=".18"/>
+                </svg>
+              </span>
+              WhatsApp
+            </a>
+
+            <a class="card contact-card" href="mailto:eduardo@nexovirtual.com">
+              <span class="badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M22 8l-10 7L2 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              Email
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
